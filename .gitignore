@@ -1,0 +1,12 @@
+_accid
+
+secrets
+config
+
+node_modules
+/dist/
+data/*
+logs
+*.swp
+*.save
+jsconfig.json

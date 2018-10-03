@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <title>ACCID</title>
+    <link href="style.css" rel="stylesheet"/>
+  </head>
+  <body>
+    <div class="App">
+      
+      <header class="item">
+	<h1>ACCID</h1>
+	<p>Query Syrian Archive Databases</p>
+      </header>
+      
+      <nav class="item">
+	<a href="">Databases</a>
+	<a href="">Actions</a>
+	<a href="">Login</a>
+      </nav>
+      
+      <div class="item databases">
+	<h3>Databases</h3>
+	<ul>
+	  <li>Sugarcube</li>
+	  <li>Locations</li>
+	  <li>Violations Types</li>
+	  <li>Collections</li>
+	  <li>Incidents</li>
+	</ul>
+      </div>
+
+      <div class="item search">
+	<h3>Query Database</h3>
+	<div>
+	  <h5>Search</h5>
+	  <input name="" type="text" value=""/>
+	</div>
+	<div>
+	  <h5>Type of Violation</h5>
+	  <select>
+	    <option value="">Massacres and other unlawful killing</option>
+	    <option value="">Hostage taking</option>
+	  </select>
+	</div>
+      </div>
+
+      <div class="item results">
+	<h3>Results</h3>
+	<code id="json">
+
+	</code>
+      </div>
+
+      <div class="item tray">
+	<h3>Working Tray</h3>
+	<p>Add items from results panel by clicking on them, and then, choose an action</p>
+        
+        <button>
+	  Add to cluster
+	</button>
+	<br/>
+	<button>
+	  Export to CSV
+	</button>
+      </div>  
+      
+    </div>
+    <script>
+     const units = [
+       {
+	 title: 'Kafr Takharim Salqin - 6…leppo - 14 October 2012',
+	 latitude: 36.1,
+	 longitude: 36.5
+       },
+       {
+	 title: 'Khan al-Assal - Aleppo - 19 March 2013',
+	 latitude: 36.1,
+	 longitude: 36.5
+       }
+     ]
+     document.getElementById('json').innerText = JSON.stringify(units)
+    </script>
+  </body>
+</html>
