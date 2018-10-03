@@ -32,6 +32,7 @@ const eachfunc = i => {
 const action = async () => {
   const t = await mongomap(mongoconnection, 'sugarcube', 'units', query, processResults, eachfunc, false);
   console.log(t);
+  console.log('aa');
 };
 
 export default action;

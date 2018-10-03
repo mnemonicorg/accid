@@ -1,5 +1,5 @@
 import {get as loGet} from 'lodash/fp';
-import booleanField from './fieldtypes';
+import {booleanField} from './fieldtypes';
 
 const prefillYoutube = u => ({
   online_title: loGet('snippet.title')(u),
@@ -89,7 +89,7 @@ const fields = {
   verified: booleanField,
   filename: {
     get: v => v,
-    set: 'AAAAAAAAAAAAAA'
+    set: v => 'AAAAAAAAAAAAAA'
   }
 }
 export default {

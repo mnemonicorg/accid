@@ -42,8 +42,6 @@ const getCluster = getOr([], 'cluster');
 
 const getAnnotations = aa => {
   const initial = getOr({}, 'annotations', aa);
-  const db = getDb(aa);
-  console.log(db);
   return initial;
 };
 

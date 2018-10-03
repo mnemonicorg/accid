@@ -1,3 +1,4 @@
+import {merge} from 'lodash/fp';
 import {
   flowP,
   // tapP,
@@ -16,13 +17,9 @@ const accid = ({connection}) => {
 
   const setMany = us => {
     const fieldsToAnnotations = u => {
-      console.log('extraset');
-      console.log(u.db);
-      console.log(database(u.db).annotations);
-      const db = database(u.db);
-      const ann = annotations[db.annotations];
-      console.log(ann);
-      return ofP(u); // eslint-disable-line
+      const annotationType = database(u.db).annotations;
+      const as = annotations.annotate(annotationType, u.annotations);
+      return ofP(merge(u, {annotations: as})); // eslint-disable-line
     };
 
     return flowP([

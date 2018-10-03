@@ -87,7 +87,7 @@ const store = ({connection}) => { // eslint-disable-line
   const unitAdd = curry(
     (newU, oldU) => {
       const merged = data.merge(oldU, newU);
-      if (!data.equal(oldU, merged)) addRevision(oldU);
+      if (!data.equal(oldU, merged)) addRevision(merged);
       return merged;
     });
 
