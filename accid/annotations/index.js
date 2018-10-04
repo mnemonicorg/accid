@@ -1,5 +1,5 @@
 import {
-  get, getOr, set
+  get, getOr
 } from 'lodash/fp';
 import {
   foldP, ofP

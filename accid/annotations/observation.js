@@ -1,5 +1,5 @@
 import {get as loGet, set as loSet} from 'lodash/fp';
-import {booleanField, locationClusterField, arrayClusterField} from './fieldtypes';
+import {booleanField, locationClusterField, arrayClusterField, singleClusterField} from './fieldtypes';
 
 const prefillYoutube = u => ({
   online_title: loGet('snippet.title')(u),
@@ -95,6 +95,7 @@ const fields = {
   locationold: locationClusterField,
   collections: arrayClusterField('collections', 'collection', () => {}),
   weapons_used: arrayClusterField('weapons', 'name', () => {}),
+  incident_code: singleClusterField('incidents', 'incident_code', () => {}),
 }
 export default {
   fields,
