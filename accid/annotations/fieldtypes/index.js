@@ -62,6 +62,7 @@ export const locationClusterField = {
           l => (l.old_sa_name === vv || l.search_name_ar === vv || l.search_name_ar_short === vv)
         )(locs);
         if (!found) console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'); // eslint-disable-line
+        if (!found) console.log(v);
         if (!found) return u;
         // if (!found) throw 'NOOOOT FOUNNNDDDD'; // eslint-disable-line
         actualval = found.search_name_ar;
