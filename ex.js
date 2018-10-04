@@ -33,7 +33,7 @@ import actions from './actions';
 //
 //
 //
-
+//
 // const args = {
 //   spreadsheet: '1gmRcnqxfqy7yLdLVkAKCZH_Xg3tEJkT8IIQw_xbF5Gs',
 //   sheet: 'Task 1'
@@ -44,7 +44,7 @@ import actions from './actions';
 //   sheet: 'Task 3'
 // }
 //
-// actions['import_sc_sheet'](args)
+// actions['import_sc_sheet'](args2)
 //   .then(map(u => ({
 //     db: 'sy-su',
 //     id: u._sc_id_hash,
@@ -54,13 +54,13 @@ import actions from './actions';
 //   .then(console.log)
 //   .catch(console.log);
 //
-//
+
 
 
 
 actions['import_old_sc']();
 // const l = {
-//   aid: '789f6a6aef872b48b3128993b4f0417d0fa701f745690383031b841a4ceb34d4'
+//   aid: 'da8bd7c0fd02479c341e3ca05f6eb18c83edb6f27cd1aefda1b0532b59fe9b9d'
 // }
 // accid.get([l]).then(console.log);
 //
