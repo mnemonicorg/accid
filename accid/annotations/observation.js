@@ -1,5 +1,5 @@
-import {get as loGet} from 'lodash/fp';
-import {booleanField} from './fieldtypes';
+import {get as loGet, set as loSet} from 'lodash/fp';
+import {booleanField, locationClusterField} from './fieldtypes';
 
 const prefillYoutube = u => ({
   online_title: loGet('snippet.title')(u),
@@ -88,9 +88,11 @@ export const prefillsc = (u) => (sources[u._sc_source] ? sources[u._sc_source](u
 const fields = {
   verified: booleanField,
   filename: {
-    get: v => v,
-    set: v => 'AAAAAAAAAAAAAA'
-  }
+    get: (u, k, v) => u,
+    set: (u, k, v) => loSet('annotations.filename', 'AAAAAAAAAAAAAA', u)
+  },
+  location: locationClusterField,
+  locationold: locationClusterField,
 }
 export default {
   fields,

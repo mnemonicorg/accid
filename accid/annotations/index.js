@@ -1,6 +1,9 @@
 import {
-  reduce, get, getOr, set
+  get, getOr, set
 } from 'lodash/fp';
+import {
+  foldP, ofP
+} from 'dashp';
 import observation from './observation';
 import incident from './incident';
 
@@ -8,7 +11,7 @@ const types = {
   observation, incident
 };
 
-const deefault = (v) => v;
+const deefault = (u) => u;
 
 const objectDeepKeys = (obj) =>
   Object.keys(obj)
@@ -17,21 +20,25 @@ const objectDeepKeys = (obj) =>
       .map(k => `${key}.${k}`))
     .reduce((x, y) => x.concat(y), Object.keys(obj));
 
-const annotate = (type, fields) => {
+const annotate = (type, accidUnit) => {
   const t = types[type];
+
+  const fields = accidUnit.annotations;
+  const unit = accidUnit;
 
   const importingKs = objectDeepKeys(fields);
   const alterations = t.fields;
 
-  const reduceKeys = reduce((a, k) => {
-    const val = get(k, fields);
-    const setter = getOr({}, k, alterations).set;
-    if (!setter) return set(k, deefault(val), a);
-    return set(k, setter(val), a);
-  }, {});
-
-  const r = reduceKeys(importingKs);
-  return r;
+  const reduceKeys = foldP(
+    (a, k) => {
+      const val = get(k, fields);
+      const setter = getOr({}, k, alterations).set;
+      if (!setter) return ofP(deefault(a));
+      return ofP(setter(a, k, val));
+      // .then(r => set(k, r, a));
+    },
+    unit);
+  return reduceKeys(importingKs);
 };
 
 const prefill = {};

@@ -6,10 +6,10 @@ import {
   keys,
   set,
   pick,
+  isNil,
   difference,
 } from 'lodash/fp';
 import sha256 from 'sha256';
-
 
 // create a unit out of a minimum of {db, id}
 const unit = curry(
@@ -29,7 +29,7 @@ const unit = curry(
 const shaU = u => {
   const i = getId(u);
   const d = getDb(u);
-  if (!(i && d)) return undefined;
+  if (isNil(i) || isNil(d)) return undefined;
   return sha256(`${i}-${d}`);
 };
 

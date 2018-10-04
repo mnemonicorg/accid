@@ -17,6 +17,7 @@ export const list = curry((connection) => {
 export default (config) => ({
   getNode: getNode(config.connection, config.id_key), // eslint-disable-line
   list: () => list(config.connection),
+  listAll: () => list(config.connection),
   id_key: config.id_key
 });
 

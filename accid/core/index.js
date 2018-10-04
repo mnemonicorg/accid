@@ -18,8 +18,8 @@ const accid = ({connection}) => {
   const setMany = us => {
     const fieldsToAnnotations = u => {
       const annotationType = database(u.db).annotations;
-      const as = annotations.annotate(annotationType, u.annotations);
-      return ofP(merge(u, {annotations: as})); // eslint-disable-line
+      return annotations.annotate(annotationType, u)
+        .then(as => ofP(merge(u, as))); // eslint-disable-line
     };
 
     return flowP([

@@ -1,4 +1,4 @@
-import {size} from 'lodash/fp';
+import {size, map} from 'lodash/fp';
 import {accid, database} from './accid';
 import actions from './actions';
 
@@ -39,14 +39,30 @@ import actions from './actions';
 //   sheet: 'Task 1'
 // };
 //
-// actions['import_sc_sheet'](args).then(console.log).catch(console.log);
+// const args2 = {
+//   spreadsheet: '1OFOllsPszS2E4ML_aPfKrqroyWK3LN1DTK9180uPAH0',
+//   sheet: 'Task 3'
+// }
+//
+// actions['import_sc_sheet'](args)
+//   .then(map(u => ({
+//     db: 'sy-su',
+//     id: u._sc_id_hash,
+//     annotations: u.cid
+//   })))
+//   .then(accid.set)
+//   .then(console.log)
+//   .catch(console.log);
 //
 //
-//
-//
+
+
 
 actions['import_old_sc']();
-
+// const l = {
+//   aid: '789f6a6aef872b48b3128993b4f0417d0fa701f745690383031b841a4ceb34d4'
+// }
+// accid.get([l]).then(console.log);
 //
 //
 //
