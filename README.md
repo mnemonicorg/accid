@@ -37,6 +37,16 @@ Annotations allow each annotation key to take in data and transform it into clus
 
 Accid connects to many different types of databases, which have standardized behaviour.  At the moment, it can connect to mongodb, json files, and sugarcube databases.
 
+databases should expose the following standard functions
+```
+database.get(id)
+database.list(page)
+database.listAll()
+database.find(filterFunc)
+database.findBy(key, term)
+database.search(term)
+```
+
 ## Running
 
 Accid needs a database configuration file - `config/databases.json`
