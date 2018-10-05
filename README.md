@@ -62,8 +62,8 @@ An example file:
   {
     "name": "incidents",
     "description": "Incidents for clustering",
-    "type": "json",
-    "connection": "../../../data/incidents.json",
+    "type": "mongodb",
+    "connection": "mongodb://127.0.0.1:27017/incidents",
     "id_key": "incident_code",
     "annotations": "incident"
   }
