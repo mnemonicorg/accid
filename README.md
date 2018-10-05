@@ -33,6 +33,19 @@ Currently, `observation` and `incident` are available.
 
 Annotations allow each annotation key to take in data and transform it into clusters or other data.
 
+Each annotation file should expose a `getter` and a `setter` fot annotation fields.  these functions are passed the unit, and the key and value to be manipulated. if a getter and a setter for a field are not set, the default is used to return the field unmanipulated.  these are supplied like this:
+
+```
+const fields = {
+  verified: booleanField,
+  filename: {
+    get: (u, k, v) => u,
+    set: (u, k, v) => loSet('annotations.filename', 'regex or function', u)
+  },
+  location: locationClusterField,
+}
+```
+
 ## Databases
 
 Accid connects to many different types of databases, which have standardized behaviour.  At the moment, it can connect to mongodb, json files, and sugarcube databases.
