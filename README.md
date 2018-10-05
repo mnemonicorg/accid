@@ -69,7 +69,8 @@ An example file:
     "id_key": "incident_code",
     "annotations": "incident"
   }
-]```
+]
+```
 
 Accid also needs an `config/accid.json` file 
 
