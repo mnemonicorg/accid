@@ -4,6 +4,8 @@ ACCID - a set of libraries and database tools to easily orchestrate clustering a
 
 Accid let's databases of unit data manage themselves, and simply stores a key and annotation to that data.  It is not meant for high speed transatcions or use, but for offering flexibility and modularisation for a team to export and import data.
 
+ACCID api and frontend are still in development.
+
 an accid unit looks like this:
 
 ```
