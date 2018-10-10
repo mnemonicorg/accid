@@ -89,13 +89,13 @@ const fields = {
   verified: booleanField,
   filename: {
     get: (u, k, v) => u,
-    set: (u, k, v) => loSet('annotations.filename', 'AAAAAAAAAAAAAA', u)
+    set: (u, k, v) => loSet('annotations.sa_link', v ? v.replace("/var/www/files/", "https://cube.syrianarchive.org/") : v, u)
   },
   location: locationClusterField,
   locationold: locationClusterField,
   collections: arrayClusterField('collections', 'collection', () => {}),
   weapons_used: arrayClusterField('weapons', 'name', () => {}),
-  incident_code: singleClusterField('incidents', 'incident_code', () => {}),
+  incident_code: arrayClusterField('incidents', 'incident_code', () => {}),
 }
 export default {
   fields,

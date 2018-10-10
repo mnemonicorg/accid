@@ -16,6 +16,7 @@ export const arrayClusterField = (dbName, dbIdField, findFunc) => ({
   get: (u, k, v) => u,
   set: (u, k, v) => {
     if (!v) return u;
+    if (!isArray(v)) v = [v]
     const db = database(dbName);
     return db.listAll()
       .then(rs => {
@@ -44,37 +45,37 @@ export const arrayClusterField = (dbName, dbIdField, findFunc) => ({
   }
 })
 
-export const singleClusterField = (dbName, dbIdField) => ({
-  get: (u, k, v) => u,
-  set: (u, k, v) => {
-    if (!v) return u;
-    const vv = v.trim();
-
-    const db = database(dbName);
-
-    return db.listAll()
-      .then(rs => {
-        const found = find(
-          l => (l[dbIdField] === vv)
-        )(rs);
-        if (!found) console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'); // eslint-disable-line
-        if (!found) console.log(v);
-        if (!found) return u;
-        // if (!found) throw 'NOOOOT FOUNNNDDDD'; // eslint-disable-line
-        const uu = data.unit(u);
-        const newU = data.unit({
-          db: dbName,
-          id: found[dbIdField],
-          cluster: [uu.aid]
-        });
-        return store.set(newU);
-      })
-      .then(() => {
-        const p = loSet('annotations.location', v, u);
-        return p;
-      });
-  },
-});
+// export const singleClusterField = (dbName, dbIdField) => ({
+//   get: (u, k, v) => u,
+//   set: (u, k, v) => {
+//     if (!v) return u;
+//     const vv = v.trim();
+//
+//     const db = database(dbName);
+//
+//     return db.listAll()
+//       .then(rs => {
+//         const found = find(
+//           l => (l[dbIdField] === vv)
+//         )(rs);
+//         if (!found) console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'); // eslint-disable-line
+//         if (!found) console.log(v);
+//         if (!found) return u;
+//         // if (!found) throw 'NOOOOT FOUNNNDDDD'; // eslint-disable-line
+//         const uu = data.unit(u);
+//         const newU = data.unit({
+//           db: dbName,
+//           id: found[dbIdField],
+//           cluster: [uu.aid]
+//         });
+//         return store.set(newU);
+//       })
+//       .then(() => {
+//         const p = loSet(`annotations.${k}`, v, u);
+//         return p;
+//       });
+//   },
+// });
 
 export const locationClusterField = {
   get: (u, k, v) => u,

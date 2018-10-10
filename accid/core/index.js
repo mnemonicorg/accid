@@ -1,7 +1,9 @@
-import {merge} from 'lodash/fp';
+import {merge, isArray} from 'lodash/fp';
+
+
 import {
   flowP,
-  // tapP,
+  tapP,
   ofP,
   collectP,
 } from 'dashp';
@@ -18,8 +20,7 @@ const accid = ({connection}) => {
   const setMany = us => {
     const fieldsToAnnotations = u => {
       const annotationType = database(u.db).annotations;
-      return annotations.annotate(annotationType, u)
-        .then(as => ofP(merge(u, as))); // eslint-disable-line
+      return annotations.annotate(annotationType, u);
     };
 
     return flowP([
@@ -28,10 +29,26 @@ const accid = ({connection}) => {
     ], us);
   };
 
+  const getMany = us => {
+    console.log('getting');
+    console.log(us);
+    const annotationsToFields = u => {
+      console.log('ayyyy');
+      const annotationType = database(u.db).annotations;
+      return annotations.getAnnotations(annotationType, u);
+    };
+    // return [];
+    return flowP([
+      store.get,
+      (r) => (isArray(r) ? r : [r]), // make sure an array and not a single accid unit passed on
+      collectP(annotationsToFields),
+    ], us);
+  };
+
   return {
     set: oneOrMany(setMany),
-    get: store.get,
-    unset: store.unset
+    get: oneOrMany(getMany),
+    unset: store.unset,
   };
 };
 

@@ -1,4 +1,4 @@
-import {size, map, filter} from 'lodash/fp';
+import {size, map, filter, union} from 'lodash/fp';
 import {collectP} from 'dashp';
 import {accid, database} from './accid';
 import actions from './actions';
@@ -32,148 +32,133 @@ import actions from './actions';
 // loc.list().then(console.log);
 //
 //
+
+
 //
+// const args = {
+//   spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
+//   sheet: 'Task2'
+// };
 //
-//
-const args = {
-  spreadsheet: '1gmRcnqxfqy7yLdLVkAKCZH_Xg3tEJkT8IIQw_xbF5Gs',
-  sheet: 'Task 1'
-};
-
-const args2 = {
-  spreadsheet: '1OFOllsPszS2E4ML_aPfKrqroyWK3LN1DTK9180uPAH0',
-  sheet: 'Task 3'
-}
-
-
-const args3 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: '2f0c717895f7f4ceb4df728fad9d1ccc5b71826f'
-}
-
-const args4 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: 'a28f5875b04b02c02b8af8c1e5d28ca9eb4f2159'
-}
-
-const args5 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: '55ed41a11c142da7ca03291cd45953fe630cedae'
-}
-
-const args6 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: 'ae87bb5c5d4b3e42c620a069aa3be221986a1e84'
-}
-
-const args7 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: '38ca5cf519da3ecec72e882dfa346d6832485ba9'
-}
-
-const args8 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: 'd2166aef18a9899ad7814ad9d92c387c353a091c'
-}
-
-const args9 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: '60e9985b6e6b0a9718c44717698e00c52a2e2c56'
-}
-
-const args10 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: 'd8354af508c6789e7d817a9edba634bab835e041'
-}
-const args11 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: 'c1bf49a337632850b46b7a0118fd455e3354f094'
-}
-const args12 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: 'a7c31d683c5afd55f609307f02d46b9fff243422'
-}
-const args13 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: '5be03a82c2ddb1a2344b66027592dea047d662d1'
-}
-const args14 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: 'b073a63cd0536611b88df8404b4b901fddcbab2f'
-}
-const args15 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: '24ab227f1455bb5f104813df8ce58cc79fb8c892'
-}
-const args16 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: 'bd23417c079982821b80ba7e8e292d403e9cdde2'
-}
-const args17 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: '83ff24eccc531ccb34dbc5ed4e42fbd9bc8d3f07'
-}
-const args18 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: '1e8b41ed9f97f538b3754f9afbff07bd5515f9f0'
-}
-const args19 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: 'Videos from Medical_facilities_Database'
-}
-const args20 = {
-  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-  sheet: 'Task2'
-}
-
-const args21 = {
-  spreadsheet: '1EtPBNRsRKaSqMsDAOaS0M23jUH8YbIjuhE4PNRnUFCc',
-  sheet: 'MOD 1'
-}
-const args22 = {
-  spreadsheet: '1EtPBNRsRKaSqMsDAOaS0M23jUH8YbIjuhE4PNRnUFCc',
-  sheet: 'MOD 2'
-}
-
-
-const importru = collectP(
-  (ars) => {
-    console.log(ars);
-    return actions['import_sc_sheet'](ars)
-      .then(filter(u => (u.cid.verified === true || u.cid.verified === 'TRUE')))
-      .then(us => {
-        console.log('total verified videos', size(us));
-        console.log('verified videos in ru collection',
-          size(
-            filter(u =>
-              u.cid.collections.includes('Civilian casualties as a result of alleged russian attacks')
-            ,)(us)
-          )
-        );
-        return us;
-      })
-      .then(map(u => ({
-        db: 'sy-su',
-        id: u._sc_id_hash,
-        annotations: u.cid
-      })))
-      .then(accid.set)
-      .catch(console.log);
-  });
-
-importru([args, args2, args3, args4, args5, args6, args7, args8, args9, args10, args11, args12, args13, args14, args15, args16, args17, args18, args19, args20, args21, args22]);
-
-
-
-actions['import_old_sc']();
-
-
-
-// const l = {
-//   aid: '41a8714fe9f1c0d2c9b1362d4f62dd4f3a84941da5a6bc1c033af6ce9077ca58'
+// const args2 = {
+//   spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
+//   sheet: 'Task4'
 // }
-// accid.get([l]).then(console.log);
 //
+// const args3 = {
+//   spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
+//   sheet: 'Videos from Medical_facilities_Database'
+// }
+//
+//
+//
+// const args4 = {
+//   spreadsheet: '1EtPBNRsRKaSqMsDAOaS0M23jUH8YbIjuhE4PNRnUFCc',
+//   sheet: 'MOD 1'
+// }
+//
+// const args5 = {
+//   spreadsheet: '1EtPBNRsRKaSqMsDAOaS0M23jUH8YbIjuhE4PNRnUFCc',
+//   sheet: 'MOD 2'
+// }
+//
+// const args6 = {
+//   spreadsheet: '1EtPBNRsRKaSqMsDAOaS0M23jUH8YbIjuhE4PNRnUFCc',
+//   sheet: 'MOD 3'
+// }
+//
+// const args7 = {
+//   spreadsheet: '1gmRcnqxfqy7yLdLVkAKCZH_Xg3tEJkT8IIQw_xbF5Gs',
+//   sheet: 'Task 1'
+// }
+//
+// const args8 = {
+//   spreadsheet: '1OFOllsPszS2E4ML_aPfKrqroyWK3LN1DTK9180uPAH0',
+//   sheet: 'Task 3'
+// }
+//
+// let totalv = 0;
+// let totalr = 0;
+//
+// const importru = collectP(
+//   (ars) => {
+//     console.log(ars);
+//     return actions['import_sheet'](ars)
+//       .then(filter(u => (u.cid.verified === true || u.cid.verified === 'TRUE')))
+//       .then(us => {
+//         totalv += size(us);
+//         totalr += size(
+//           filter(u =>
+//             u.cid.collections.includes('Civilian casualties as a result of alleged russian attacks')
+//           )(us)
+//         );
+//         totalr += size(
+//           filter(u =>
+//             u.cid.collections.includes('Russian airstrikes in Syria')
+//           )(us)
+//         );
+//         console.log('total verified videos', size(us));
+//         console.log('verified videos in ru collection 1',
+//           size(
+//             filter(u =>
+//               u.cid.collections.includes('Civilian casualties as a result of alleged russian attacks')
+//             ,)(us)
+//           )
+//         );
+//         console.log('verified videos in ru collection 2',
+//           size(
+//             filter(u =>
+//               u.cid.collections.includes('Russian airstrikes in Syria')
+//             ,)(us)
+//           )
+//         );
+//         console.log('totalv ', totalv);
+//         console.log('totalr ', totalr)
+//         return us;
+//       })
+//       .then(map(u => ({
+//         db: 'sy-su',
+//         id: u._sc_id_hash,
+//         annotations: u.cid
+//       })))
+//       .then(accid.set)
+//       .catch(console.log);
+//   });
+//
+// importru([args, args2, args3, args4, args5, args6, args7, args8, ]);
+
+
+//
+// actions['import_old_sc']();
+// Civilian casualties as a result of alleged russian attacks
+//
+
+
+//
+// accid.get({db: 'collections', id: 'Civilian casualties as a result of alleged russian attacks'})
+//   .then(async r => {
+//     // console.log(r);
+//     console.log("here");
+//     const r2 = await accid.get({db: 'collections', id: 'Russian airstrikes in Syria'});
+//     const todo = union(r.cluster, r2.cluster);
+//     // console.log(todo);
+//     console.log("upah");
+//     return accid.get(todo);
+//   })
+//   .then(r => {
+//     const ars = {
+//       spreadsheet: '1aKT8g06LieBQo2QLqbABSVVKuRg9k4-dFsyU0-euxqI',
+//       data: r
+//     }
+//     return actions['export_sheet'](ars);
+//   })
+//   .catch(console.log);
+
+const l = {
+  aid: '2731c94997f993f78871f5ce55d1e7d19e1419744ed062460803e248bd654226'
+}
+accid.get([l]).then(console.log);
+
 //
 //
 //

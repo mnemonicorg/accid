@@ -20,8 +20,10 @@ const objectDeepKeys = (obj) =>
       .map(k => `${key}.${k}`))
     .reduce((x, y) => x.concat(y), Object.keys(obj));
 
+
 const annotate = (type, accidUnit) => {
-  const t = types[type];
+  if (!types[type]) console.warn(` ANNOTATION TYPE ${type} not found`);
+  const t = types[type] || {};
 
   const fields = accidUnit.annotations;
   const unit = accidUnit;
@@ -41,8 +43,21 @@ const annotate = (type, accidUnit) => {
   return reduceKeys(importingKs);
 };
 
+const getAnnotations = (type, accidUnit) => {
+  if (!types[type]) console.warn(` ANNOTATION TYPE ${type} not found`);
+  const t = types[type] || {fields: {}};
+
+  const fields = accidUnit.annotations;
+  const unit = accidUnit;
+
+  const alterations = t.fields;
+  console.log(objectDeepKeys(alterations));
+  const importingKs = objectDeepKeys(fields);
+  return ofP(accidUnit);
+}
+
 const prefill = {};
 
 export default {
-  annotate, prefill
+  annotate, prefill, getAnnotations
 };

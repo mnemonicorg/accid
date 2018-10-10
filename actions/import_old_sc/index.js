@@ -14,7 +14,7 @@ const processResults = is => {
 const query = { $or: [{'cid.verified': 'TRUE' }, {'cid.verified': true}] };
 
 const eachfunc = i => {
-  // console.log(i._sc_id_hash);
+  console.log(i._sc_id_hash);
   const a = {
     db: 'sy-su',
     id: i._sc_id_hash,
