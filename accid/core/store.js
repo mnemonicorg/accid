@@ -214,6 +214,8 @@ const store = ({connection}) => { // eslint-disable-line
 
   return {
     get,
+    getMany: unitByAids(getMany),
+    setMany: unitByAids(setMany),
     set,
     unset,
   };

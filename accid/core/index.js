@@ -30,10 +30,10 @@ const accid = ({connection}) => {
   };
 
   const getMany = us => {
-    console.log('getting');
-    console.log(us);
+    // console.log('getting');
+    // console.log(us);
     const annotationsToFields = u => {
-      console.log('ayyyy');
+      // console.log('ayyyy');
       // console.log(u);
       const annotationType = database(u.db).annotations;
       return annotations.getAnnotations(annotationType, u).catch(console.log);

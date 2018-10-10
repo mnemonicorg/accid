@@ -23,11 +23,8 @@ const action = async (args) => {
   const id = args.spreadsheet;
 
   const data = args.data; // eslint-disable-line
-  console.log('aaaa');
-  console.log(data[0]);
+
   const fields = objectDeepKeys(mergeAll(data));
-  console.log(fields);
-  console.log('fuelds');
 
   const tokens = config.token;
   const client = config.client_id;
@@ -49,8 +46,7 @@ const action = async (args) => {
         ? duplicateSheet(copyFromSpreadsheet, copyFromSheet, id, nm)
         : getOrCreateSheet(id, nm));
       const us = unitsToRows(fields, data);
-      console.log(us);
-      console.log('uuusss');
+
       await clearValues(id, nm);
       await createValues(id, nm, us);
 

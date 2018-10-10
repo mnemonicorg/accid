@@ -33,7 +33,7 @@ import actions from './actions';
 //
 
 
-
+//
 
 const args = {
   spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
@@ -80,12 +80,19 @@ const args8 = {
 let totalva = [];
 let totalra = [];
 
+const fuckups = [
+  '2f6ffb6da958be8621934a347288166bb687c06c16068ba7ead2ebf3572e742c',
+  '3dba4810276ff27da9a754424b4909d546f42c2d8346ccd001a7674a6ed298e5',
+  '3dba4810276ff27da9a754424b4909d546f42c2d8346ccd001a7674a6ed298e5',
+];
+
 const importru = collectP(
   (ars) => {
     console.log(ars);
     return actions['import_sheet'](ars)
       .then(filter(u => (u.cid.verified === true || u.cid.verified === 'TRUE')))
       .then(us => {
+
         totalva = concat(totalva, map('_sc_id_hash', us));
         totalra = concat(totalra, map('_sc_id_hash',
           filter(u =>
@@ -117,11 +124,17 @@ const importru = collectP(
         console.log('totalr ', size(totalra));
         return us;
       })
-      .then(map(u => ({
-        db: 'sy-su',
-        id: u._sc_id_hash,
-        annotations: u.cid
-      })))
+      .then(map(u => {
+        if (fuckups.includes(u._sc_id_hash)){
+          console.log(u.cid.incident_code);
+          console.log(u._sc_id_hash);
+        }
+        return {
+          db: 'sy-su',
+          id: u._sc_id_hash,
+          annotations: u.cid
+        };
+      }))
       .then(accid.set)
 
       .catch(console.log);
@@ -139,19 +152,17 @@ importru([args5, args6, args, args2, args3, args4, args7, args8]).then(() => {
 // Civilian casualties as a result of alleged russian attacks
 //
 
-//
-// //
+
+
 // accid.get({db: 'collections', id: 'Civilian casualties as a result of alleged russian attacks'})
 //   .then(async r => {
-//     console.log(r);
-//     console.log("here");
 //     const r2 = await accid.get({db: 'collections', id: 'Russian airstrikes in Syria'});
 //     const todo = union(r.cluster, r2.cluster);
-//     console.log(todo);
-//     console.log("upah");
 //     return accid.get(todo);
 //   })
 //   .then(r => {
+//     console.log('size of package', size(r));
+//     console.log(r[0]);
 //     const ars = {
 //       spreadsheet: '1aKT8g06LieBQo2QLqbABSVVKuRg9k4-dFsyU0-euxqI',
 //       data: r
@@ -161,12 +172,12 @@ importru([args5, args6, args, args2, args3, args4, args7, args8]).then(() => {
 //   .catch(console.log);
 
 // const l = {
-//   aid: '41a8714fe9f1c0d2c9b1362d4f62dd4f3a84941da5a6bc1c033af6ce9077ca58'
+//   aid: 'e7329a9a396e426fd37df4b21302ad44594d6003dfead3c29774c06ac363908a'
 // }
 // accid.get([l]).then(console.log);
-
 //
-//
+// //
+// //
 //
 //
 //

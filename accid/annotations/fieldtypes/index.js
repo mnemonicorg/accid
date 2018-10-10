@@ -14,22 +14,22 @@ export const booleanField = {
 
 export const arrayClusterField = (dbName, dbIdField) => ({
   get: (u, k, v) => {
-    console.log('suuuuppp');
-    console.log(k);
-    console.log(v);
+    // console.log('suuuuppp');
+    // console.log(k);
+    // console.log(v);
     if (!v) return u;
     if (isEmpty(v)) return u;
     const db = database(dbName);
     return collectP(vv =>
       store.get(vv)
         .then(r => {
-          console.log(r);
-          console.log('heyyy');
+          // console.log(r);
+          // console.log('heyyy');
           if (!r) return undefined;
           return db.getNode(r.id);
         })
         .then(r => {
-          console.log(r);
+          // console.log(r);
           if (!r) return undefined;
           return r[dbIdField];
         })
@@ -101,9 +101,9 @@ export const arrayClusterField = (dbName, dbIdField) => ({
 
 export const locationClusterField = {
   get: (u, k, v) => {
-    console.log('suuuuppp');
-    console.log(k);
-    console.log(v);
+    // console.log('suuuuppp');
+    // console.log(k);
+    // console.log(v);
     if (!v) return u;
     if (isEmpty(v)) return u;
     if (!isArray(v)) v = [v];
@@ -111,13 +111,13 @@ export const locationClusterField = {
     return collectP(vv =>
       store.get(vv)
         .then(r => {
-          console.log(r);
-          console.log('heyyy');
+          // console.log(r);
+          // console.log('heyyy');
           if (!r) return undefined;
           return db.getNode(r.id);
         })
         .then(r => {
-          console.log(r);
+          // console.log(r);
           if (!r) return undefined;
           return r['search_name_ar'];
         })

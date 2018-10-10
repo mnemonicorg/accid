@@ -1,5 +1,5 @@
 import {
-  get, getOr, groupBy, mapValues, map, merge
+  get, getOr, groupBy, mapValues, map, merge, has, isArray
 } from 'lodash/fp';
 import {
   foldP, ofP, flowP
@@ -57,13 +57,18 @@ const getAnnotations = async (type, accidUnit) => {
   const alterations = t.fields;
 
   const cl = await flowP([
-    store.get,
+    store.getMany,
     groupBy(x => x.db),
     mapValues(map('aid'))
   ], accidUnit.clusters);
 
-  console.log('aaaaaaaaaaa');
-  console.log(cl);
+  if (has('undefined', cl)) {
+    console.log('aaaaaaaaaaa');
+    console.log(accidUnit.aid);
+    console.log(accidUnit.clusters);
+    console.log(cl);
+    throw Error;
+  }
 
   const fields = {
     annotations: accidUnit.annotations,
