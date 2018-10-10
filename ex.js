@@ -1,4 +1,4 @@
-import {size, map, filter, union} from 'lodash/fp';
+import {size, map, filter, union, uniq, xor, concat} from 'lodash/fp';
 import {collectP} from 'dashp';
 import {accid, database} from './accid';
 import actions from './actions';
@@ -31,101 +31,107 @@ import actions from './actions';
 //
 // loc.list().then(console.log);
 //
-//
 
 
-//
-// const args = {
-//   spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-//   sheet: 'Task2'
-// };
-//
-// const args2 = {
-//   spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-//   sheet: 'Task4'
-// }
-//
-// const args3 = {
-//   spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
-//   sheet: 'Videos from Medical_facilities_Database'
-// }
-//
-//
-//
-// const args4 = {
-//   spreadsheet: '1EtPBNRsRKaSqMsDAOaS0M23jUH8YbIjuhE4PNRnUFCc',
-//   sheet: 'MOD 1'
-// }
-//
-// const args5 = {
-//   spreadsheet: '1EtPBNRsRKaSqMsDAOaS0M23jUH8YbIjuhE4PNRnUFCc',
-//   sheet: 'MOD 2'
-// }
-//
-// const args6 = {
-//   spreadsheet: '1EtPBNRsRKaSqMsDAOaS0M23jUH8YbIjuhE4PNRnUFCc',
-//   sheet: 'MOD 3'
-// }
-//
-// const args7 = {
-//   spreadsheet: '1gmRcnqxfqy7yLdLVkAKCZH_Xg3tEJkT8IIQw_xbF5Gs',
-//   sheet: 'Task 1'
-// }
-//
-// const args8 = {
-//   spreadsheet: '1OFOllsPszS2E4ML_aPfKrqroyWK3LN1DTK9180uPAH0',
-//   sheet: 'Task 3'
-// }
-//
-// let totalv = 0;
-// let totalr = 0;
-//
-// const importru = collectP(
-//   (ars) => {
-//     console.log(ars);
-//     return actions['import_sheet'](ars)
-//       .then(filter(u => (u.cid.verified === true || u.cid.verified === 'TRUE')))
-//       .then(us => {
-//         totalv += size(us);
-//         totalr += size(
-//           filter(u =>
-//             u.cid.collections.includes('Civilian casualties as a result of alleged russian attacks')
-//           )(us)
-//         );
-//         totalr += size(
-//           filter(u =>
-//             u.cid.collections.includes('Russian airstrikes in Syria')
-//           )(us)
-//         );
-//         console.log('total verified videos', size(us));
-//         console.log('verified videos in ru collection 1',
-//           size(
-//             filter(u =>
-//               u.cid.collections.includes('Civilian casualties as a result of alleged russian attacks')
-//             ,)(us)
-//           )
-//         );
-//         console.log('verified videos in ru collection 2',
-//           size(
-//             filter(u =>
-//               u.cid.collections.includes('Russian airstrikes in Syria')
-//             ,)(us)
-//           )
-//         );
-//         console.log('totalv ', totalv);
-//         console.log('totalr ', totalr)
-//         return us;
-//       })
-//       .then(map(u => ({
-//         db: 'sy-su',
-//         id: u._sc_id_hash,
-//         annotations: u.cid
-//       })))
-//       .then(accid.set)
-//       .catch(console.log);
-//   });
-//
-// importru([args, args2, args3, args4, args5, args6, args7, args8, ]);
+
+
+const args = {
+  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
+  sheet: 'Task2'
+};
+
+const args2 = {
+  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
+  sheet: 'Task4'
+}
+
+const args3 = {
+  spreadsheet: '1_TUox7KjP69F-Nx3Fc4b1kJWrwzfZNSYJFP6zSveN8w',
+  sheet: 'Videos from Medical_facilities_Database'
+}
+
+
+
+const args4 = {
+  spreadsheet: '1EtPBNRsRKaSqMsDAOaS0M23jUH8YbIjuhE4PNRnUFCc',
+  sheet: 'MOD 1'
+}
+
+const args5 = {
+  spreadsheet: '1EtPBNRsRKaSqMsDAOaS0M23jUH8YbIjuhE4PNRnUFCc',
+  sheet: 'MOD 2'
+}
+
+const args6 = {
+  spreadsheet: '1EtPBNRsRKaSqMsDAOaS0M23jUH8YbIjuhE4PNRnUFCc',
+  sheet: 'MOD 3'
+}
+
+const args7 = {
+  spreadsheet: '1gmRcnqxfqy7yLdLVkAKCZH_Xg3tEJkT8IIQw_xbF5Gs',
+  sheet: 'Task 1'
+}
+
+const args8 = {
+  spreadsheet: '1OFOllsPszS2E4ML_aPfKrqroyWK3LN1DTK9180uPAH0',
+  sheet: 'Task 3'
+}
+
+let totalva = [];
+let totalra = [];
+
+const importru = collectP(
+  (ars) => {
+    console.log(ars);
+    return actions['import_sheet'](ars)
+      .then(filter(u => (u.cid.verified === true || u.cid.verified === 'TRUE')))
+      .then(us => {
+        totalva = concat(totalva, map('_sc_id_hash', us));
+        totalra = concat(totalra, map('_sc_id_hash',
+          filter(u =>
+            u.cid.collections.includes('Russian airstrikes in Syria')
+          )(us)))
+        totalra = concat(totalra, map('_sc_id_hash',
+          filter(u =>
+            u.cid.collections.includes('Civilian casualties as a result of alleged russian attacks')
+        )(us)))
+        totalva = uniq(totalva);
+        totalra = uniq(totalra);
+
+        console.log('total verified videos', size(us));
+        console.log('verified videos in ru collection 1',
+          size(
+            filter(u =>
+              u.cid.collections.includes('Civilian casualties as a result of alleged russian attacks')
+            ,)(us)
+          )
+        );
+        console.log('verified videos in ru collection 2',
+          size(
+            filter(u =>
+              u.cid.collections.includes('Russian airstrikes in Syria')
+            ,)(us)
+          )
+        );
+        console.log('totalv ', size(totalva));
+        console.log('totalr ', size(totalra));
+        return us;
+      })
+      .then(map(u => ({
+        db: 'sy-su',
+        id: u._sc_id_hash,
+        annotations: u.cid
+      })))
+      .then(accid.set)
+
+      .catch(console.log);
+  });
+
+importru([args5, args6, args, args2, args3, args4, args7, args8]).then(() => {
+  console.log(xor(totalva, totalra));
+  console.log('oooop');
+  return 'poop';
+});
 
 
 //
@@ -133,15 +139,15 @@ import actions from './actions';
 // Civilian casualties as a result of alleged russian attacks
 //
 
-
 //
+// //
 // accid.get({db: 'collections', id: 'Civilian casualties as a result of alleged russian attacks'})
 //   .then(async r => {
-//     // console.log(r);
+//     console.log(r);
 //     console.log("here");
 //     const r2 = await accid.get({db: 'collections', id: 'Russian airstrikes in Syria'});
 //     const todo = union(r.cluster, r2.cluster);
-//     // console.log(todo);
+//     console.log(todo);
 //     console.log("upah");
 //     return accid.get(todo);
 //   })
@@ -154,10 +160,10 @@ import actions from './actions';
 //   })
 //   .catch(console.log);
 
-const l = {
-  aid: '2731c94997f993f78871f5ce55d1e7d19e1419744ed062460803e248bd654226'
-}
-accid.get([l]).then(console.log);
+// const l = {
+//   aid: '41a8714fe9f1c0d2c9b1362d4f62dd4f3a84941da5a6bc1c033af6ce9077ca58'
+// }
+// accid.get([l]).then(console.log);
 
 //
 //

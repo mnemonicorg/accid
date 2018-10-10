@@ -193,7 +193,8 @@ const store = ({connection}) => { // eslint-disable-line
   const getUnit = ({aid, db, id}) =>
     flowP([
       collectUnitData(data.unit({aid, db, id})),
-      mergeUnitRelations
+      mergeUnitRelations,
+      data.unit
     ], null);
 
   // accept str accid id (aid) OR unit with aid, or db, id

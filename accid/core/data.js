@@ -22,6 +22,8 @@ const unit = curry(
       id: getId(u),
       annotations: getAnnotations(u),
       cluster: getCluster(u),
+      clusters: getClusters(u),
+
     };
     return cid;
   });
@@ -38,6 +40,7 @@ const getDb = getOr(undefined, 'db');
 const getAid = u => getOr(undefined, 'aid', u) || shaU(u);
 
 const getCluster = getOr([], 'cluster');
+const getClusters = getOr([], 'clusters');
 
 
 const getAnnotations = aa => {

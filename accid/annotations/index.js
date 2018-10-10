@@ -1,11 +1,16 @@
 import {
-  get, getOr
+  get, getOr, groupBy, mapValues, map, merge
 } from 'lodash/fp';
 import {
-  foldP, ofP
+  foldP, ofP, flowP
 } from 'dashp';
 import observation from './observation';
 import incident from './incident';
+
+import s from '../core/store';
+import accidConfig from '../../config/accid';
+
+const store = s(accidConfig);
 
 const types = {
   observation, incident
@@ -18,14 +23,17 @@ const objectDeepKeys = (obj) =>
     .filter(key => obj[key] instanceof Object)
     .map(key => objectDeepKeys(obj[key])
       .map(k => `${key}.${k}`))
-    .reduce((x, y) => x.concat(y), Object.keys(obj));
+    .reduce((x, y) => x.concat(y), Object.keys(obj).filter(d => (!(obj[d] instanceof Function))));
 
 
 const annotate = (type, accidUnit) => {
   if (!types[type]) console.warn(` ANNOTATION TYPE ${type} not found`);
   const t = types[type] || {};
 
-  const fields = accidUnit.annotations;
+  const fields = {
+    annotations: accidUnit.annotations,
+    clusters: accidUnit.clusters
+  };
   const unit = accidUnit;
 
   const importingKs = objectDeepKeys(fields);
@@ -43,18 +51,48 @@ const annotate = (type, accidUnit) => {
   return reduceKeys(importingKs);
 };
 
-const getAnnotations = (type, accidUnit) => {
+const getAnnotations = async (type, accidUnit) => {
   if (!types[type]) console.warn(` ANNOTATION TYPE ${type} not found`);
   const t = types[type] || {fields: {}};
-
-  const fields = accidUnit.annotations;
-  const unit = accidUnit;
-
   const alterations = t.fields;
-  console.log(objectDeepKeys(alterations));
-  const importingKs = objectDeepKeys(fields);
-  return ofP(accidUnit);
-}
+
+  const cl = await flowP([
+    store.get,
+    groupBy(x => x.db),
+    mapValues(map('aid'))
+  ], accidUnit.clusters);
+
+  console.log('aaaaaaaaaaa');
+  console.log(cl);
+
+  const fields = {
+    annotations: accidUnit.annotations,
+    clusters: cl
+  };
+
+  const unit = {
+    aid: accidUnit.aid,
+    db: accidUnit.db,
+    id: accidUnit.id,
+    cluster: accidUnit.cluster,
+    annotations: fields.annotations,
+    clusters: cl
+  };
+
+  const exportingks = objectDeepKeys(fields);
+
+  const reduceKeys = foldP(
+    (a, k) => {
+      const val = get(k, fields);
+      const setter = getOr({}, k, alterations).get;
+      if (!setter) return ofP(deefault(a));
+      return ofP(setter(a, k, val));
+      // .then(r => set(k, r, a));
+    },
+    unit);
+  return reduceKeys(exportingks);
+  // return ofP(accidUnit);
+};
 
 const prefill = {};
 

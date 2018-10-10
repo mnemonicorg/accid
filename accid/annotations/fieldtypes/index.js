@@ -1,4 +1,4 @@
-import {find, set as loSet, uniq, compact} from 'lodash/fp';
+import {find, set as loSet, uniq, compact, isEmpty, isArray, unset as loUnset} from 'lodash/fp';
 import {collectP} from 'dashp';
 import database from '../../databases';
 import s from '../../core/store';
@@ -8,12 +8,34 @@ import data from '../../core/data';
 const store = s(accidConfig);
 
 export const booleanField = {
-  get: (u, k, v) => loSet(`annotations.${k}`, v, u),
-  set: (u, k, v) => loSet(`annotations.${k}`, (v === true || v === 'TRUE'), u)
+  get: (u, k, v) => loSet(k, v, u),
+  set: (u, k, v) => loSet(k, (v === true || v === 'TRUE'), u)
 };
 
-export const arrayClusterField = (dbName, dbIdField, findFunc) => ({
-  get: (u, k, v) => u,
+export const arrayClusterField = (dbName, dbIdField) => ({
+  get: (u, k, v) => {
+    console.log('suuuuppp');
+    console.log(k);
+    console.log(v);
+    if (!v) return u;
+    if (isEmpty(v)) return u;
+    const db = database(dbName);
+    return collectP(vv =>
+      store.get(vv)
+        .then(r => {
+          console.log(r);
+          console.log('heyyy');
+          if (!r) return undefined;
+          return db.getNode(r.id);
+        })
+        .then(r => {
+          console.log(r);
+          if (!r) return undefined;
+          return r[dbIdField];
+        })
+        , v)
+    .then(r => loSet(k, r, u));
+  },
   set: (u, k, v) => {
     if (!v) return u;
     if (!isArray(v)) v = [v]
@@ -39,7 +61,7 @@ export const arrayClusterField = (dbName, dbIdField, findFunc) => ({
         })(uniq(compact(v)))
       })
       .then(() => {
-        const p = loSet(`annotations.${k}`, uniq(compact(v)), u);
+        const p = loUnset(k, u);
         return p;
       });
   }
@@ -78,7 +100,30 @@ export const arrayClusterField = (dbName, dbIdField, findFunc) => ({
 // });
 
 export const locationClusterField = {
-  get: (u, k, v) => u,
+  get: (u, k, v) => {
+    console.log('suuuuppp');
+    console.log(k);
+    console.log(v);
+    if (!v) return u;
+    if (isEmpty(v)) return u;
+    if (!isArray(v)) v = [v];
+    const db = database('locations');
+    return collectP(vv =>
+      store.get(vv)
+        .then(r => {
+          console.log(r);
+          console.log('heyyy');
+          if (!r) return undefined;
+          return db.getNode(r.id);
+        })
+        .then(r => {
+          console.log(r);
+          if (!r) return undefined;
+          return r['search_name_ar'];
+        })
+        , v)
+    .then(r => loSet(k, r, u));
+  },
   set: (u, k, v) => {
     const dbName = 'locations';
     const dbIdField = 'id';
@@ -107,7 +152,7 @@ export const locationClusterField = {
         return store.set(newU);
       })
       .then(() => {
-        const p = loSet('annotations.location', actualval, u);
+        const p = loUnset(k, u);
         return p;
       });
   },

@@ -86,16 +86,29 @@ export const sources = {
 export const prefillsc = (u) => (sources[u._sc_source] ? sources[u._sc_source](u) : {});
 
 const fields = {
-  verified: booleanField,
-  filename: {
-    get: (u, k, v) => u,
-    set: (u, k, v) => loSet('annotations.sa_link', v ? v.replace("/var/www/files/", "https://cube.syrianarchive.org/") : v, u)
+  clusters: {
+    locations: locationClusterField,
+    locationold: locationClusterField,
+    collections: arrayClusterField('collections', 'collection', () => {}),
+    weapons_used: arrayClusterField('weapons', 'name', () => {}),
+    incident_code: arrayClusterField('incidents', 'incident_code', () => {}),
   },
-  location: locationClusterField,
-  locationold: locationClusterField,
-  collections: arrayClusterField('collections', 'collection', () => {}),
-  weapons_used: arrayClusterField('weapons', 'name', () => {}),
-  incident_code: arrayClusterField('incidents', 'incident_code', () => {}),
+  annotations: {
+    verified: booleanField,
+    creator: {
+      get: (u, k, v) => loSet(k, 'AAAAAAAAAAAAAAAAAA', u),
+      set: (u, k, v) => loSet(k, 'BBBBBBBBBBBBBBBBBB', u)
+    },
+    filename: {
+      get: (u, k, v) => u,
+      set: (u, k, v) => loSet('annotations.sa_link', v ? v.replace("/var/www/files/", "https://cube.syrianarchive.org/") : v, u)
+    },
+    location: locationClusterField,
+    locationold: locationClusterField,
+    collections: arrayClusterField('collections', 'collection', () => {}),
+    weapons_used: arrayClusterField('weapons', 'name', () => {}),
+    incident_code: arrayClusterField('incidents', 'incident_code', () => {}),
+  }
 }
 export default {
   fields,
