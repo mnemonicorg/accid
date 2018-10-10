@@ -3,7 +3,8 @@ import {
   merge,
   omit,
   isString,
-  map
+  map,
+  groupBy
 } from 'lodash/fp';
 import {
   flowP,
@@ -59,9 +60,14 @@ const store = ({connection}) => { // eslint-disable-line
   ], null);
 
   // unit id => {query relations}
-  const relationsQuery = ({aid}) => ({cluster_id: aid});
+  const childrenQuery = ({aid}) => ({cluster_id: aid});
   // unit id => {query relations}
-  const relationsQueryP = ({aid}) => ofP(relationsQuery({aid}));
+  const childrenQueryP = ({aid}) => ofP(childrenQuery({aid}));
+
+  // unit id => {query relations}
+  const parentQuery = ({aid}) => ({aid});
+  // unit id => {query relations}
+  const parentQueryP = ({aid}) => ofP(parentQuery({aid}));
 
   // unit id => {query unit}
   const unitQuery = ({aid}) => ({aid});
@@ -69,18 +75,26 @@ const store = ({connection}) => { // eslint-disable-line
   const unitQueryP = ({aid}) => ofP(unitQuery({aid})); // eslint-disable-line
 
   // unit id => [{relation}]
-  const relations = ({aid}) =>
-    flowP([relationsQueryP, findMany(connection, relationsCollection)], {aid});
+  const children = ({aid}) =>
+    flowP([childrenQueryP, findMany(connection, relationsCollection)], {aid});
+
+  // unit id => [{relation}]
+  const parents = ({aid}) =>
+    flowP([parentQueryP, findMany(connection, relationsCollection)], {aid});
 
   // unit id => [related ids]
-  const relatedUnitAids = ({aid}) => flowP([relations, map('aid')], {aid});
+  const childrenUnitAids = ({aid}) => flowP([children, map('aid')], {aid});
+
+  // unit id => [related ids]
+  const parentUnits = ({aid}) => flowP([parents, map('cluster_id')], {aid});
 
   // unit id => [unit, [related ids]]
   // TODO: allP works weird when included in flow.  see other todo
-  const collectUnitData = ({aid}) => allP([getDbUnit({aid}), relatedUnitAids({aid})]);
+  const collectUnitData = ({aid}) =>
+    allP([getDbUnit({aid}), childrenUnitAids({aid}), parentUnits({aid})]);
 
   // [u, rs] => {unit}
-  const mergeUnitRelations = ([u, rs]) => merge(u, {cluster: rs});
+  const mergeUnitRelations = ([u, cs, ps]) => merge(u, {cluster: cs, clusters: ps});
 
 
   // new unit, old unit => merged unit
