@@ -4,6 +4,7 @@ import {
   HOME_PAGE_ROUTE,
   ACTIONS_PAGE_ROUTE,
   DATABASES_PAGE_ROUTE,
+  LOGIN_PAGE_ROUTE
 } from '../routes';
 
 const Nav = () => (
@@ -13,6 +14,7 @@ const Nav = () => (
         { route: HOME_PAGE_ROUTE, label: 'Home' },
         { route: ACTIONS_PAGE_ROUTE, label: 'actions' },
         { route: DATABASES_PAGE_ROUTE, label: 'Databases' },
+        { route: LOGIN_PAGE_ROUTE, label: 'Login' },
       ].map(link => (
         <li key={link.route}>
           <NavLink to={link.route} activeStyle={{ color: 'limegreen' }} exact>

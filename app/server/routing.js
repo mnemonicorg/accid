@@ -14,7 +14,7 @@
 
 import renderApp from './render-app';
 
-export default (app) => {
+export default (app, passport) => {
   app.get('*', (req, res) => {
     res.send(renderApp());
   });
@@ -49,4 +49,10 @@ export default (app) => {
     console.error(err.stack);
     res.status(500).send('Something went wrong!');
   });
+
+  app.post('/login', passport.authenticate('login', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true // allow flash messages
+  }));
 };

@@ -10,13 +10,15 @@ import HomePage from './component/page/home';
 // import NotFoundPage from './component/page/not-found';
 import Databases from './container/databases';
 import Actions from './component/actions';
+import Login from './component/page/login';
 
 import '../scss/main.scss';
 
 import {
   DATABASES_PAGE_ROUTE,
   ACTIONS_PAGE_ROUTE,
-  HOME_PAGE_ROUTE
+  HOME_PAGE_ROUTE,
+  LOGIN_PAGE_ROUTE
 } from './routes';
 
 
@@ -25,6 +27,7 @@ const App = () => (
     <Helmet titleTemplate={`%s | ${APP_NAME}`} defaultTitle={APP_NAME} />
     <Nav />
     <Switch>
+      <Route path={LOGIN_PAGE_ROUTE} render={() => <Login />} />
       <Route path={DATABASES_PAGE_ROUTE} render={() => <Databases />} />
       <Route path={ACTIONS_PAGE_ROUTE} render={() => <Actions />} />
       <Route exact path={HOME_PAGE_ROUTE} render={() => <HomePage />} />
