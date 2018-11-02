@@ -5,10 +5,16 @@ import passport from 'passport';
 
 import initPassport from './init-passport';
 import routing from './routing';
-import { WEB_PORT, isProd } from '../config/app_config';
+import { WEB_PORT } from '../config/app_config';
+
+const isProd = false;
+
+// Initialize Passport
+initPassport(passport);
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false })); //For body parser
+
+app.use(bodyParser.urlencoded({ extended: false })); // For body parser
 app.use(bodyParser.json());
 
 // Configuring Passport
@@ -21,8 +27,6 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Initialize Passport
-initPassport(passport);
 
 routing(app, passport);
 

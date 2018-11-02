@@ -8,19 +8,17 @@ const initPassport = (passport) => {
 
   passport.deserializeUser((username, done) => {
     const u = {username};
-    findOne(u, (err, user) => {
-      done(err, user);
-    });
+    const user = findOne(u);
+    if (!user) throw new Error('user not found!');
+    return done(null, user);
   });
 
-  passport.use('local', new LocalStrategy({
-    passReqToCallback: true
-  },
-  (req, username, password, done) => {
-    const user = {username, password};
-    console.log(user);
-    return done(null, user);
-  }
+  passport.use('local', new LocalStrategy(
+    (username, password, done) => {
+      const user = {username, password};
+      console.log(user);
+      return done(null, user);
+    }
   ));
 };
 
