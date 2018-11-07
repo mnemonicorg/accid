@@ -4,9 +4,12 @@ import {
 } from 'lodash/fp';
 import Promise from 'bluebird';
 import {
-  accid, search, list, dbs, database
-} from '../../accid';
-import actions from '../../actions';
+  accid, database
+} from '../accid';
+import {
+  database
+} from '../accid/databases';
+import actions from '../actions';
 
 const router = express.Router();
 
