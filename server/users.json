@@ -1,0 +1,12 @@
+[
+  {
+    "id": 11,
+    "username": "tareef",
+    "hashed_password": "$2a$08$Km0yz/37qgs5lnJujofLQOIsvXbLGGJBf5DqWeFKXz2zv.F5WNFE."
+  },
+  {
+    "id": 12,
+    "username": "niko",
+    "hashed_password": "$2a$08$.MIgZOE6HOUXe8DAXSg0lOu7O1zyLyh52H.RITg6A3i2J.ZNZHIxS"
+  }
+]
