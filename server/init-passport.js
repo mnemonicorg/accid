@@ -15,10 +15,8 @@ const initPassport = (passport) => {
   passport.use('local', new LocalStrategy(
     (username, password, done) => {
       const user = findOne({username, password});
-      const validPassword = validatePassword({username, password});
-      // const user = {username, password};
-      console.log(user);
       if (!user) throw new Error('user not found!');
+      const validPassword = validatePassword({username, password});
       if (!validPassword) throw new Error('password is wrong!');
       return done(null, user);
     }
