@@ -1,5 +1,5 @@
 import {get as loGet, set as loSet} from 'lodash/fp';
-import {booleanField, locationClusterField, arrayClusterField, singleClusterField} from './fieldtypes';
+import {booleanField, locationClusterField, arrayRemoveClusterField, arrayClusterField, singleClusterField, LatLonField} from './fieldtypes';
 
 const prefillYoutube = u => ({
   online_title: loGet('snippet.title')(u),
@@ -87,23 +87,28 @@ export const prefillsc = (u) => (sources[u._sc_source] ? sources[u._sc_source](u
 
 const fields = {
   clusters: {
-    locations: locationClusterField,
-    locationold: locationClusterField,
+    locations: arrayClusterField('locations', 'search_name_ar', () => {}),
+    // locationold: locationClusterField,
     collections: arrayClusterField('collections', 'collection', () => {}),
     weapons: arrayClusterField('weapons', 'name', () => {}),
     incidents: arrayClusterField('incidents', 'incident_code', () => {}),
   },
+  remove: {
+    locations: arrayRemoveClusterField('locations', 'search_name_ar')
+  },
   annotations: {
     verified: booleanField,
+    public: booleanField,
+    relevant: booleanField,
     filename: {
       get: (u, k, v) => u,
       set: (u, k, v) => loSet('annotations.sa_link', v ? v.replace("/var/www/files/", "https://cube.syrianarchive.org/") : v, u)
     },
-    location: locationClusterField,
-    locationold: locationClusterField,
-    collections: arrayClusterField('collections', 'collection', () => {}),
-    weapons_used: arrayClusterField('weapons', 'name', () => {}),
-    incident_code: arrayClusterField('incidents', 'incident_code', () => {}),
+    // collections: arrayClusterField('collections', 'collection', () => {}),
+    // weapons_used: arrayClusterField('weapons', 'name', () => {}),
+    // incident_code: arrayClusterField('incidents', 'incident_code', () => {}),
+    latitude: LatLonField,
+    longitude: LatLonField,
   }
 }
 export default {

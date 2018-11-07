@@ -27,11 +27,16 @@ const objectDeepKeys = (obj) =>
 
 
 const annotate = (type, accidUnit) => {
+  // console.time('annotate');
   if (!types[type]) console.warn(` ANNOTATION TYPE ${type} not found`);
   const t = types[type] || {};
 
+  console.log('annooooooootaaaatttinnnnngggg');
+  console.log(accidUnit.id);
+
   const fields = {
     annotations: accidUnit.annotations,
+    remove: accidUnit.remove,
     clusters: accidUnit.clusters
   };
   const unit = accidUnit;
@@ -49,30 +54,32 @@ const annotate = (type, accidUnit) => {
     },
     unit);
   return reduceKeys(importingKs);
+    // .then(r => { console.timeEnd('annotate'); return r; });
 };
 
 const getAnnotations = async (type, accidUnit) => {
+  // console.time('getAnnotate');
   if (!types[type]) console.warn(` ANNOTATION TYPE ${type} not found`);
   const t = types[type] || {fields: {}};
   const alterations = t.fields;
 
-  const cl = await flowP([
-    store.getMany,
-    groupBy(x => x.db),
-    mapValues(map('aid'))
-  ], accidUnit.clusters);
-
-  if (has('undefined', cl)) {
-    console.log('aaaaaaaaaaa');
-    console.log(accidUnit.aid);
-    console.log(accidUnit.clusters);
-    console.log(cl);
-    throw Error;
-  }
+  // const cl = await flowP([
+  //   store.getMany,
+  //   groupBy(x => x.db),
+  //   mapValues(map('aid'))
+  // ], accidUnit.clusters);
+  //
+  // if (has('undefined', cl)) {
+  //   console.log('aaaaaaaaaaa');
+  //   console.log(accidUnit.aid);
+  //   console.log(accidUnit.clusters);
+  //   console.log(cl);
+  //   throw Error;
+  // }
 
   const fields = {
     annotations: accidUnit.annotations,
-    clusters: cl
+    clusters: accidUnit.clusters
   };
 
   const unit = {
@@ -81,7 +88,7 @@ const getAnnotations = async (type, accidUnit) => {
     id: accidUnit.id,
     cluster: accidUnit.cluster,
     annotations: fields.annotations,
-    clusters: cl
+    clusters: fields.clusters
   };
 
   const exportingks = objectDeepKeys(fields);
@@ -96,6 +103,7 @@ const getAnnotations = async (type, accidUnit) => {
     },
     unit);
   return reduceKeys(exportingks);
+  // .then(r => { console.timeEnd('getAnnotate'); return r; });
   // return ofP(accidUnit);
 };
 

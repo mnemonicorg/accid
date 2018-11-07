@@ -1,7 +1,7 @@
 import accidConfig from '../config/accid';
 import a from './core';
 
-import database from './databases';
+import d from './databases';
 
 export const accid = a(accidConfig);
 
@@ -9,6 +9,8 @@ export const accid = a(accidConfig);
 // export const addFields = curry(
 //   (db, id, fields) => get(db, id).then(source => accid.push(db, id, source, fields))
 // );
+
+export const database = d;
 
 export default {
   database,

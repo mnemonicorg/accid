@@ -1,22 +1,26 @@
+import {get as loGet, set as loSet} from 'lodash/fp';
+import {booleanField, locationClusterField, arrayRemoveClusterField, arrayClusterField, LatLonField} from './fieldtypes';
 
-const cluster = {
-  reference_code: null,
-  incident_date: null,
-  incident_time: null,
-  staff_id: null,
-  summary_ar: null,
-  summary_en: null,
-  location: null,
-  latitude: null,
-  longitude: null,
-  keywords: null,
-  weapons_used: null,
-  collections: null,
-  weather: null,
-  armed_group: null,
-  type_of_violation: null,
+const fields = {
+  clusters: {
+    locations: arrayClusterField('locations', 'search_name_ar', () => {}),
+    // location: locationClusterField,
+    // locationold: locationClusterField,
+    collections: arrayClusterField('collections', 'collection', () => {}),
+    weapons: arrayClusterField('weapons', 'name', () => {}),
+  },
+  remove: {
+    locations: arrayRemoveClusterField('locations', 'search_name_ar')
+  },
+  annotations: {
+    verified: booleanField,
+    public: booleanField,
+    relevant: booleanField,
+    latitude: LatLonField,
+    longitude: LatLonField,
+  }
 };
 
 export default {
-  cluster
+  fields,
 };

@@ -15,7 +15,7 @@ import sha256 from 'sha256';
 const unit = curry(
   (u) => {
     const i = getAid(u);
-    if (!i) return undefined;
+    if (!i) throw new Error(`CANNOT MAKE UNIT OUT OF ${u}`);
     const cid = {
       aid: i,
       db: getDb(u),

@@ -1,17 +1,23 @@
 import {
   curry,
   merge,
+  mergeAll,
   omit,
   isString,
+  filter,
   map,
-  groupBy
+  uniq,
+  concat,
+  find,
+  mapValues,
+  groupBy,
+  flatMap,
 } from 'lodash/fp';
 import {
   flowP,
   // tapP,
   ofP,
   collectP,
-  allP
 } from 'dashp';
 
 import Promise from 'bluebird';
@@ -54,10 +60,12 @@ const unitByAids = curry((func, arg) => {
 const store = ({connection}) => { // eslint-disable-line
 
   // unit id => {unit}
-  const getDbUnit = ({aid}) => flowP([
-    () => getNode(connection, collection, dbid, aid),
-    data.unit
-  ], null);
+  const getDbUnit = ({aid, db, id}) =>
+    flowP([
+      () => getNode(connection, collection, dbid, aid),
+      merge({aid, db, id}),
+      data.unit
+    ], null);
 
   // unit id => {query relations}
   const childrenQuery = ({aid}) => ({cluster_id: aid});
@@ -90,8 +98,12 @@ const store = ({connection}) => { // eslint-disable-line
 
   // unit id => [unit, [related ids]]
   // TODO: allP works weird when included in flow.  see other todo
-  const collectUnitData = ({aid}) =>
-    allP([getDbUnit({aid}), childrenUnitAids({aid}), parentUnits({aid})]);
+  const collectUnitData = async ({aid, db, id}) => {
+    const u = await getDbUnit({aid, db, id});
+    const cs = await childrenUnitAids({aid});
+    const ps = await parentUnits({aid});
+    return [u, cs, ps];
+  };
 
   // [u, rs] => {unit}
   const mergeUnitRelations = ([u, cs, ps]) => merge(u, {cluster: cs, clusters: ps});
@@ -127,7 +139,7 @@ const store = ({connection}) => { // eslint-disable-line
         getDbUnit,
         merger(newUnit),
         storeU
-      ], {aid: newUnit.aid});
+      ], newUnit);
     });
 
   const setDbU = updateDbU(unitAdd);
@@ -170,6 +182,8 @@ const store = ({connection}) => { // eslint-disable-line
 
   const setUnit = u => {
     const _u = data.unit(u);
+    console.log('setting');
+    console.log(u.id);
     return flowP([
       () => setUAnnotations(_u),
       () => setCluster(_u),
@@ -190,19 +204,63 @@ const store = ({connection}) => { // eslint-disable-line
   // unit id => {unit with relations}
   // TODO: this flow should function differently, but the allP in collectUnitData
   // is a little strange.
-  const getUnit = ({aid, db, id}) =>
-    flowP([
-      collectUnitData(data.unit({aid, db, id})),
+  const getUnit = ({aid, db, id}) => {
+    const d = data.unit({aid, db, id});
+    return flowP([
+      collectUnitData,
       mergeUnitRelations,
       data.unit
-    ], null);
+    ], d);
+  };
+
+  const getUnits = async (us) => {
+    const forUnits = map(data.unit)(us);
+    const forAids = map('aid')(forUnits);
+
+    const clustersQuery = {
+      $or: [
+        {
+          cluster_id: {
+            $in: forAids
+          }
+        },
+        {
+          aid: {
+            $in: forAids
+          }
+        },
+      ]
+    };
+    const clusters = await findMany(connection, 'relations', clustersQuery);
+    const allAids = uniq(concat(forAids, flatMap(u => [u.cluster_id, u.aid], clusters)));
+    const allUnits = await findMany(connection, 'units', {aid: {$in: allAids}});
+    const units = map(u => {
+      const dbU = find(au => au.aid === u.aid)(allUnits);
+
+      const cluster = map('aid', filter(c => c.cluster_id === u.aid)(clusters));
+      const clusterss = map('cluster_id', filter(c => c.aid === u.aid)(clusters));
+      const clustersss = groupBy(x => x.db, filter(au => clusterss.includes(au.aid), allUnits));
+
+      const uu = merge(u, dbU);
+      const uuu = {
+        aid: uu.aid,
+        db: uu.db,
+        id: uu.id,
+        annotations: uu.annotations,
+        cluster,
+        clusters: clustersss
+      };
+      return uuu;
+    }, forUnits);
+    return units;
+  };
 
   // accept str accid id (aid) OR unit with aid, or db, id
   // accept lists of these, or just one
   const io = f => unitByAids(oneOrMany(f));
 
   // [ids] => [{units}]
-  const getMany = collectP(getUnit);
+  const getMany = getUnits;
   const get = io(getMany);
 
   // [units] => [units]

@@ -12,7 +12,11 @@ import s from './store';
 import database from '../databases';
 import annotations from '../annotations';
 
+import {findMany} from '../databases/mongodb';
+
 import {oneOrMany} from '../helpers';
+
+const unitscollection = 'units';
 
 const accid = ({connection}) => {
   const store = s({connection});
@@ -23,6 +27,8 @@ const accid = ({connection}) => {
       return annotations.annotate(annotationType, u);
     };
 
+
+
     return flowP([
       collectP(fieldsToAnnotations),
       store.set
@@ -30,7 +36,6 @@ const accid = ({connection}) => {
   };
 
   const getMany = us => {
-    // console.log('getting');
     // console.log(us);
     const annotationsToFields = u => {
       // console.log('ayyyy');
@@ -39,10 +44,14 @@ const accid = ({connection}) => {
       return annotations.getAnnotations(annotationType, u).catch(console.log);
     };
     // return [];
+    console.time('getting');
     return flowP([
       store.get,
+      r => { console.timeEnd('getting'); console.time('annotating'); return r; },
       (r) => (isArray(r) ? r : [r]), // make sure an array and not a single accid unit passed on
       collectP(annotationsToFields),
+      r => { console.timeEnd('annotating'); return r; },
+
     ], us);
   };
 
@@ -50,6 +59,7 @@ const accid = ({connection}) => {
     set: oneOrMany(setMany),
     get: oneOrMany(getMany),
     unset: store.unset,
+    findMany: findMany(connection, unitscollection),
   };
 };
 
