@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 export const HOME_PAGE_ROUTE = '/';
 export const ACTIONS_PAGE_ROUTE = '/actions';
 export const DATABASES_PAGE_ROUTE = '/databases';
-export const LOGIN_PAGE_ROUTE = '/login';
+export const LOGOUT_PAGE_ROUTE = '/logout';
 
 const Nav = () => (
   <nav>
@@ -13,6 +13,7 @@ const Nav = () => (
         { route: HOME_PAGE_ROUTE, label: 'Home' },
         { route: ACTIONS_PAGE_ROUTE, label: 'actions' },
         { route: DATABASES_PAGE_ROUTE, label: 'Databases' },
+        { route: LOGOUT_PAGE_ROUTE, label: 'logout' },
       ].map(link => (
         <li key={link.route}>
           <NavLink to={link.route} activeStyle={{ color: 'limegreen' }} exact>

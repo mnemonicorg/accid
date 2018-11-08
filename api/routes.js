@@ -62,10 +62,11 @@ router.get('/accid',
     wrapRes(accid.get('jjj'), res)
 );
 
-// router.get('/databases/:db/list', (req, res) => {
-//   const l = () => list(req.params.db, 1);
-//   return wrapRes(l, res);
-// });
+router.get('/databases/:db/list', (req, res) => {
+  const db = database(req.params.db);
+  const l = () => db.list(req.params.db, 1);
+  return wrapRes(l, res);
+});
 
 // router.get('/databases/:db/:term', (req, res) => search(req.params.db, req.params.term).then(r => res.send(r)));
 
