@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(session({
   store: new FileSession(),
   secret: 'mySecretKey',
-  resave: true,
+  resave: false,
   saveUninitialized: true
 }));
 

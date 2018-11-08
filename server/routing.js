@@ -39,6 +39,7 @@ export default (passport) => {
 
   router.get('/logout', (req, res) => {
     req.logout();
+    req.session.destroy();
     res.redirect('/');
   });
 
