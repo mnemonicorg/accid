@@ -2,12 +2,12 @@ import path from 'path';
 import webpack from 'webpack';
 
 import { WDS_PORT } from './config/app_config';
-import { isProd } from './app/shared/util';
+import { isProd } from './app/util';
 
 export default {
   entry: [
     'react-hot-loader/patch',
-    './app/client',
+    './app/webapp',
   ],
   output: {
     filename: 'js/bundle.js',

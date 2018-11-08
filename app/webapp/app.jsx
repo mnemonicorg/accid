@@ -11,14 +11,12 @@ import HomePage from './component/page/home';
 import Databases from './container/databases';
 import Actions from './component/actions';
 
-import '../scss/main.scss';
+import '../static/scss/main.scss';
 
-import {
-  DATABASES_PAGE_ROUTE,
-  ACTIONS_PAGE_ROUTE,
-  HOME_PAGE_ROUTE
-} from './routes';
-
+export const HOME_PAGE_ROUTE = '/';
+export const ACTIONS_PAGE_ROUTE = '/actions';
+export const DATABASES_PAGE_ROUTE = '/databases';
+export const LOGIN_PAGE_ROUTE = '/login';
 
 const App = () => (
   <div>

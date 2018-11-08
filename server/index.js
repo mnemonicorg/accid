@@ -29,7 +29,7 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
-routing(app, passport);
+app.use('/', routing(passport));
 
 app.listen(WEB_PORT, () => {
   // eslint-disable-next-line no-console

@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import {
-  HOME_PAGE_ROUTE,
-  ACTIONS_PAGE_ROUTE,
-  DATABASES_PAGE_ROUTE,
-} from '../routes';
+
+export const HOME_PAGE_ROUTE = '/';
+export const ACTIONS_PAGE_ROUTE = '/actions';
+export const DATABASES_PAGE_ROUTE = '/databases';
+export const LOGIN_PAGE_ROUTE = '/login';
 
 const Nav = () => (
   <nav>
