@@ -21,15 +21,14 @@ export default (passport) => {
 
   router.get('/login', (req, res) => {
     // res.sendFile(path.join(__dirname, '../public', 'index1.html'));
-    res.sendFile('/log.html', { root : __dirname});
+    res.sendFile('/log.html', {root: __dirname});
   });
 
   router.get('/profile', isLoggedIn, (req, res) => {
-    res.sendFile('/profile.html', { root : __dirname});
+    res.sendFile('/profile.html', {root: __dirname});
   });
 
-  router.post('/login', (req, res, next) => {
-    console.log(req.query.next);
+  router.post('/login', (req, res, next) => { // eslint-disable-line
     return passport.authenticate('local', {
       successRedirect: req.query.next || '/aaaa', // redirect to the secure profile section
       failureRedirect: '/login', // redirect back to the signup page if there is an error
