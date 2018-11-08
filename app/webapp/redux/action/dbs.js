@@ -19,6 +19,7 @@ export const getDbs = (dispatch) => {
   dispatch(getDbsRequest());
   return api.databases()
     .then((data) => {
+      console.log(data);
       if (!data) throw Error('No message received');
       return dispatch(getDbsSuccess(data));
     })

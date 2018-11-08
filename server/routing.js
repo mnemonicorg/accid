@@ -5,7 +5,6 @@ import apiroutes from '../api/routes';
 import approutes from '../app/routes';
 
 const isLoggedIn = (req, res, next) => {
-  console.log('iiiiiiiiiiiiiii');
   if (req.isAuthenticated()) return next();
   res.redirect(`/login?next=${req.originalUrl}`);
 };

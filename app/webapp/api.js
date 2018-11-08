@@ -9,7 +9,11 @@ const databasesUrl = `${API_URL}/databases`;
 const databaseUrl = (db) => `${databasesUrl}/${db}`;
 const databaseListUrl = (db) => `${databasesUrl}/${db}/list`;
 
-const getMethod = { method: 'GET' };
+const getMethod = {
+  method: 'GET',
+  withCredentials: true,
+  credentials: 'same-origin',
+};
 
 const resCheck = curry(res => {
   if (!res.ok) throw Error(res.statusText);
