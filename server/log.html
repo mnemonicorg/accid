@@ -2,9 +2,11 @@
 <html>
   <head></head>
   <body>
+
+
     <div>
       <h1>Welecom to the Login page</h1>
-      <form action="/login" method="post">
+      <form id="loginform" action="/login" method="post">
         <div>
           <label htmlFor="username" id="usnernameLabel">
             Name:
@@ -24,5 +26,15 @@
         </button>
       </form>
     </div>
+
+
+    <script type="text/javascript">
+      const urlParams = new URLSearchParams(window.location.search);
+      const next = urlParams.get('next');
+      const l = document.getElementById('loginform');
+      if (next) {
+        l.setAttribute('action', '/login?next=' + next);
+      }
+    </script>
   </body>
 </html>

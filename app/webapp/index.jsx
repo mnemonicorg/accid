@@ -28,11 +28,9 @@ ReactDOM.render(wrapApp(App, store), rootEl);
 
 if (module.hot) {
   // flow-disable-next-line
-  module.hot.accept('../webapp', () => {
+  module.hot.accept('../webapp/app', () => {
     // eslint-disable-next-line global-require
-    const NextApp = require('../webapp').default;
+    const NextApp = require('../webapp/app').default;
     ReactDOM.render(wrapApp(NextApp, store), rootEl);
   });
 }
-
-setUpSocket(store);

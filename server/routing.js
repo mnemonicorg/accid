@@ -4,10 +4,11 @@ import express from 'express';
 import apiroutes from '../api/routes';
 import approutes from '../app/routes';
 
-function isLoggedIn(req, res, next) {
+const isLoggedIn = (req, res, next) => {
+  console.log('iiiiiiiiiiiiiii');
   if (req.isAuthenticated()) return next();
   res.redirect(`/login?next=${req.originalUrl}`);
-}
+};
 
 const router = express.Router();
 
@@ -19,18 +20,19 @@ export default (passport) => {
   //   res.send('hellow');
   // });
 
+  router.get('/profile', isLoggedIn, (req, res) => {
+    res.sendFile('/profile.html', {root: __dirname});
+  });
+
   router.get('/login', (req, res) => {
     // res.sendFile(path.join(__dirname, '../public', 'index1.html'));
     res.sendFile('/log.html', {root: __dirname});
   });
 
-  router.get('/profile', isLoggedIn, (req, res) => {
-    res.sendFile('/profile.html', {root: __dirname});
-  });
-
-  router.post('/login', (req, res, next) => { // eslint-disable-line
+  router.post('/login', (req, res, next) => {
+    console.log(req.query.next);
     return passport.authenticate('local', {
-      successRedirect: req.query.next || '/aaaa', // redirect to the secure profile section
+      successRedirect: req.query.next || '/', // redirect to the secure profile section
       failureRedirect: '/login', // redirect back to the signup page if there is an error
       // failureFlash: true // allow flash messages
     })(req, res, next);
