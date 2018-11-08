@@ -51,8 +51,6 @@ router.post('/actions/:name', (req, res) => {
 
 router.get('/databases',
   (req, res) => {
-    console.log('aaaaaaaaaaaaa');
-    console.log(map(onlyDbFields, dbs));
     const d = () => Promise.resolve(map(onlyDbFields, dbs)); // eslint-disable-line
     return wrapRes(d, res);
   });
@@ -68,7 +66,11 @@ router.get('/databases/:db/list', (req, res) => {
   return wrapRes(l, res);
 });
 
-// router.get('/databases/:db/:term', (req, res) => search(req.params.db, req.params.term).then(r => res.send(r)));
+router.get('/databases/:db/:term', (req, res) => {
+  const db = database(req.params.db);
+  return db.search(req.params.term).then(
+    r => res.send(r));
+});
 
 router.get('/databases/:db', (req, res) => {
   const df = () => Promise.resolve(database(req.params.db)); // eslint-disable-line
