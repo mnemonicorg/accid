@@ -6,6 +6,8 @@ import Promise from 'bluebird';
 import {
   accid, database
 } from '../accid';
+import dbs from '../config/databases.json';
+
 // import {
 //   database
 // } from '../accid/databases';
@@ -49,6 +51,8 @@ router.post('/actions/:name', (req, res) => {
 
 router.get('/databases',
   (req, res) => {
+    console.log('aaaaaaaaaaaaa');
+    console.log(map(onlyDbFields, dbs));
     const d = () => Promise.resolve(map(onlyDbFields, dbs)); // eslint-disable-line
     return wrapRes(d, res);
   });

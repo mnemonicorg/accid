@@ -102,6 +102,7 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "require-reload": "^0.2.2",
+    "session-file-store": "^1.2.0",
     "sha256": "^0.2.0",
     "socket.io": "^2.1.1",
     "socket.io-client": "^2.1.1"

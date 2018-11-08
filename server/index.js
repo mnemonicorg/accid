@@ -1,12 +1,15 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import expressSession from 'express-session';
+import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
+import FileStore from 'session-file-store';
 
 import initPassport from './init-passport';
 import routing from './routing';
 import { WEB_PORT } from '../config/app_config';
+
+const FileSession = FileStore(session);
 
 const isProd = false;
 
@@ -20,7 +23,8 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // Configuring Passport
-app.use(expressSession({
+app.use(session({
+  store: new FileSession(),
   secret: 'mySecretKey',
   resave: true,
   saveUninitialized: true
