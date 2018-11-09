@@ -26,7 +26,9 @@ const selectedInitial = {
   results: {
     // db1: []
     // sy-su: []
-  }
+  },
+  filters: {
+  },
 };
 
 const selected = (state = selectedInitial, action) => {

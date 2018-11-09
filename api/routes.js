@@ -66,6 +66,14 @@ router.get('/databases/:db/list', (req, res) => {
   return wrapRes(l, res);
 });
 
+router.post('/databases/:db/filter', (req, res) => {
+  const db = database(req.params.db);
+  console.log('filtering db with following filters');
+  console.log(req.body);
+  const l = () => db.filter(req.body);
+  return wrapRes(l, res);
+});
+
 router.get('/databases/:db/:term', (req, res) => {
   const db = database(req.params.db);
   return db.search(req.params.term).then(

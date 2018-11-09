@@ -36,8 +36,18 @@ export const selectDb = (dbName) =>
       .catch(() => dispatch(selectDbFailure()));
   };
 
+export const filterDb = (dbName, filters) =>
+  (dispatch) => {
+    console.log('redux action filter db');
+    console.log(dbName, filters);
+    return api.filter(dbName, filters)
+      .then(d => dispatch(fillDbResults(d)))
+      .catch(() => dispatch(selectDbFailure()));
+  };
+
 export const listDb = (dbName) =>
   (dispatch) => {
+    console.log('list db');
     return api.list(dbName)
       .then(d => dispatch(fillDbResults(d)))
       .catch(() => dispatch(selectDbFailure()));

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import Filters from './filters';
+
 export default class Database extends Component {
   constructor(props) {
     super(props);
@@ -9,8 +11,10 @@ export default class Database extends Component {
   render() {
     const {
       selectedDatabase,
-      listDb
+      listDb,
+      filterDb
     } = this.props;
+
     return (
       <div className="selectedDatabase">
         {selectedDatabase.name}
@@ -20,6 +24,12 @@ export default class Database extends Component {
         <button type="button" onClick={() => listDb(selectedDatabase.name)}>
           List
         </button>
+        <Filters
+          db={selectedDatabase}
+          filters={selectedDatabase.filters}
+          filterDb={filterDb(selectedDatabase.name)}
+        />
+
       </div>
     );
   }
