@@ -15,6 +15,9 @@ const composeEnhancers = (isProd ? null : window.__REDUX_DEVTOOLS_EXTENSION_COMP
 // const preloadedState = window.__PRELOADED_STATE__;
 /* eslint-enable no-underscore-dangle */
 
+const persistedState = localStorage.getItem('accidState')
+  ? JSON.parse(localStorage.getItem('accidState')) : {};
+
 
 let middleware = [thunkMiddleware];
 if (!isProd) {
@@ -23,12 +26,17 @@ if (!isProd) {
 
 export const store = createStore(
   reducerStore,
+  persistedState,
   // {
   //   hello: 'aaaaaaaaaaa', // todo - figure out how this is even helpful. --- lol it not
   //   dbs: {[]} //preloadedState.dbs
   // },
   composeEnhancers(applyMiddleware(...middleware))
 );
+
+store.subscribe(() => {
+  localStorage.setItem('accidState', JSON.stringify(store.getState()));
+});
 
 
 export default {store};
