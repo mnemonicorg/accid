@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 
-import Database from './db';
-import Databases from './dbs';
-import Results from './results';
-import Tray from './tray';
+import Database from './panel-database';
+import Databases from './panel-databases';
+import Results from './panel-results';
+import Tray from './panel-tray';
 
 
 export default class DatabaseWrapper extends Component {

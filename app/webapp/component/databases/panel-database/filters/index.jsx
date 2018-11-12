@@ -16,24 +16,26 @@ export default class Filters extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  // in here, check to see if we already have saved values of what we weren
+  // filtering.  if so, use these as the state.
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
-    console.log(this.state);
-    console.log('pppppppppppp');
     if (!isEqual(nextProps.filterValues, this.state)) {
       this.setState(nextProps.filterValues);
     }
   }
 
+  // given the database we are in, and the filter key we are updating,
+  // update the filters state in this componens
   handleChange(db, filter, event) {
-    console.log('A change was detected: ');
-    console.log(this.state);
+    // console.log('A change was detected: ');
+    // console.log(this.state);
     this.setState({[filter]: event.target.value});
   }
 
+  // submit the current filter state to the database.  Result
+  // will render in the results panel
   handleSubmit(e) {
     e.preventDefault();
-    console.log('SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS');
     const { filterDb } = this.props;
     console.log('A name was submitted: ');
     console.log(this.state);
@@ -46,6 +48,7 @@ export default class Filters extends Component {
       filterTypes
     } = this.props;
 
+    // little trick to make a custom handleChange function for each filter
     const hc = curry(
       (database, filter, e) => this.handleChange(database, filter, e)
     );
@@ -54,7 +57,7 @@ export default class Filters extends Component {
       <form className="filters" onSubmit={this.handleSubmit}>
         {mapW((v, k) => (
           <div className="filter">
-            <h6 className="filtertitle">
+            <h6 className="filterkey">
               {k}
             </h6>
             <Filter value={getOr(undefined, k, this.state)} filter={v} update={hc(db, k)} />

@@ -16,9 +16,9 @@ export default class Results extends Component {
     } = this.props;
     const idKey = selectedDatabase.id_key;
     return (
-      <div className="results">
+      <ul className="results">
         {map(d => (
-          <li>
+          <li className="result">
             {d[idKey]}
             <hr />
             <ResultComponent data={d} type={selectedDatabase.type} />
@@ -26,7 +26,7 @@ export default class Results extends Component {
             <ReactJson src={d} name={null} collapsed />
           </li>
         ), results)}
-      </div>
+      </ul>
     );
   }
 }
