@@ -22,6 +22,19 @@ const Nav = () => (
         </li>
       ))}
     </ul>
+
+    <hr />
+    <button
+      type="button"
+      onClick={() => {
+        console.log('local clear');
+        localStorage.clear();
+        location.reload(true); // eslint-disable-line
+      }}
+    >
+      Clear all data!
+    </button>
+    <hr />
   </nav>
 );
 
