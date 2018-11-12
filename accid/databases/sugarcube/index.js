@@ -12,6 +12,7 @@ const constructor = (config) => {
 
   const filterQueries = {
     source: (src) => ({'_sc_source': src}),
+    id: (id) => ({'_sc_id_hash': id}),
     startDate: (start) => ({
       '_sc_pubdates.source': {
         $gte: start
@@ -77,6 +78,10 @@ const configValues = {
       type: 'str',
       help: 'the source of the thing',
       choices: ['youtube_channel', 'twitter_feed']
+    },
+    id: {
+      type: 'str',
+      help: 'the id of the SC item'
     },
     startDate:{
       type: 'date',

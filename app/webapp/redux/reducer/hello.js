@@ -27,6 +27,8 @@ const selectedInitial = {
     // db1: []
     // sy-su: []
   },
+  annotations: {
+  },
   filterValues: {
   },
 };
@@ -43,6 +45,7 @@ const selected = (state = selectedInitial, action) => {
       return state;
   }
 };
+
 
 export default combineReducers({
   dbs,

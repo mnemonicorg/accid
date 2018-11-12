@@ -1,11 +1,14 @@
 import express from 'express';
 import {
-  pick, map, size
+  pick, map, size, curry
 } from 'lodash/fp';
 import Promise from 'bluebird';
 import {
   accid, database
 } from '../accid';
+import {
+  mergeAccid
+} from './helpers';
 import dbs from '../config/databases.json';
 
 // import {
@@ -60,9 +63,25 @@ router.get('/accid',
     wrapRes(accid.get('jjj'), res)
 );
 
+// router.post('/accid/get', (req, res) => {
+//   console.log('getting annotations');
+//   const auds = req.body;
+//   const l = () => accid.get(auds);
+//   return wrapRes(l, res);
+// });
+
+const getMergeAccid = curry((db, rs) => {
+  const auds = map(r => ({
+    id: r[db.id_key],
+    db: db.name,
+  }))(rs);
+  return accid.getMany(auds).then(rauds => mergeAccid(db.id_key, rauds, rs)); // eslint-disable-line
+});
+
 router.get('/databases/:db/list', (req, res) => {
   const db = database(req.params.db);
-  const l = () => db.list(req.params.db, 1);
+  console.log(db);
+  const l = () => db.list(req.params.db, 1).then(getMergeAccid(db));
   return wrapRes(l, res);
 });
 
@@ -70,7 +89,7 @@ router.post('/databases/:db/filter', (req, res) => {
   const db = database(req.params.db);
   console.log('filtering db with following filters');
   console.log(req.body);
-  const l = () => db.filter(req.body);
+  const l = () => db.filter(req.body).then(getMergeAccid(db));
   return wrapRes(l, res);
 });
 

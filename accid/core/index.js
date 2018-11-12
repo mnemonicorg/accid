@@ -58,6 +58,8 @@ const accid = ({connection}) => {
   return {
     set: oneOrMany(setMany),
     get: oneOrMany(getMany),
+    getMany,
+    setMany,
     unset: store.unset,
     findMany: findMany(connection, unitscollection),
   };

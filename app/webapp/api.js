@@ -10,6 +10,9 @@ const databaseUrl = (db) => `${databasesUrl}/${db}`;
 const databaseListUrl = (db) => `${databasesUrl}/${db}/list`;
 const databaseFilterUrl = (db) => `${databasesUrl}/${db}/filter`;
 
+const getAnnotationsUrl = `${databasesUrl}/accid/get`;
+
+
 const getMethod = {
   method: 'GET',
   withCredentials: true,
@@ -47,7 +50,7 @@ const list = db => flowP([
   resCheck
 ], getMethod);
 
-const filter = (db, data) => {
+const filterDb = (db, data) => {
   console.log('calling the api');
   console.log(db, data);
   return flowP([
@@ -56,9 +59,19 @@ const filter = (db, data) => {
   ], postMethod(data));
 };
 
+const getAnnotations = (data) => {
+  console.log('calling the api');
+  console.log(data);
+  return flowP([
+    http.fetch(getAnnotationsUrl),
+    resCheck
+  ], postMethod(data));
+};
+
 export default {
   databases,
   database,
   list,
-  filter
+  filterDb,
+  getAnnotations
 };

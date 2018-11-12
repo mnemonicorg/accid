@@ -15,7 +15,6 @@ const updateFilters = createAction('UPDATE_FILTERS');
 const fillDbResults = createAction('FILL_DATABASE_RESULTS');
 const fillDbFailure = createAction('FILL_DATABASE_FAILURE');
 
-
 export const getDbs = (dispatch) => {
   // console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
   // console.log(dispatch);
@@ -44,7 +43,7 @@ export const filterDb = (dbName, filters) =>
     console.log('redux action filter db');
     console.log(dbName, filters);
     dispatch(updateFilters([dbName, filters]));
-    return api.filter(dbName, filters)
+    return api.filterDb(dbName, filters)
       .then(d => dispatch(fillDbResults(d)))
       .catch(() => dispatch(fillDbFailure()));
   };
