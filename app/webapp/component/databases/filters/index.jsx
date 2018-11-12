@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import {map, curry, getOr} from 'lodash/fp';
+import {
+  map, curry, getOr, isEqual
+} from 'lodash/fp';
 
 import Filter from './filter';
 
@@ -12,6 +14,15 @@ export default class Filters extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
+    console.log(this.state);
+    console.log('pppppppppppp');
+    if (!isEqual(nextProps.filterValues, this.state)) {
+      this.setState(nextProps.filterValues);
+    }
   }
 
   handleChange(db, filter, event) {
@@ -32,7 +43,7 @@ export default class Filters extends Component {
   render() {
     const {
       db,
-      filters
+      filterTypes
     } = this.props;
 
     const hc = curry(
@@ -48,7 +59,7 @@ export default class Filters extends Component {
             </h6>
             <Filter value={getOr(undefined, k, this.state)} filter={v} update={hc(db, k)} />
           </div>
-        ))(filters)}
+        ))(filterTypes)}
         <input type="submit" value="Filter" />
       </form>
     );

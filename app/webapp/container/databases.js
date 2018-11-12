@@ -11,6 +11,7 @@ const mapStateToProps = (store) => {
     databases: get('dbs.databases', store),
     selectedDatabase: get('selected.selectedDatabase', store),
     results: getOr(undefined, `selected.results.${currentDb}`, store),
+    filterValues: getOr(undefined, `selected.filterValues.${currentDb}`, store),
   };
 };
 

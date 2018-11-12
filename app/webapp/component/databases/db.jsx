@@ -12,7 +12,8 @@ export default class Database extends Component {
     const {
       selectedDatabase,
       listDb,
-      filterDb
+      filterDb,
+      filterValues,
     } = this.props;
 
     return (
@@ -26,8 +27,9 @@ export default class Database extends Component {
         </button>
         <Filters
           db={selectedDatabase}
-          filters={selectedDatabase.filters}
+          filterTypes={selectedDatabase.filters}
           filterDb={filterDb(selectedDatabase.name)}
+          filterValues={filterValues}
         />
 
       </div>

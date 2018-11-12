@@ -27,7 +27,7 @@ const selectedInitial = {
     // db1: []
     // sy-su: []
   },
-  filters: {
+  filterValues: {
   },
 };
 
@@ -35,6 +35,8 @@ const selected = (state = selectedInitial, action) => {
   switch (action.type) {
     case 'SELECT_DATABASE_SUCCESS':
       return set('selectedDatabase', action.payload.result, state);
+    case 'UPDATE_FILTERS':
+      return set(`filterValues.${action.payload[0]}`, action.payload[1], state);
     case 'FILL_DATABASE_RESULTS':
       return set(`results.${state.selectedDatabase.name}`, action.payload.result, state);
     default:
