@@ -46,8 +46,26 @@ const selected = (state = selectedInitial, action) => {
   }
 };
 
+const updateInitial = {
+  update: false,
+};
+
+const update = (state = updateInitial, action) => {
+  switch (action.type) {
+    case 'UPDATE_STATUS_SUCCESS':
+      return set('update', false, state);
+    case 'UPDATE_STATUS_FAILURE':
+      return set('update', false, state);
+    case 'UPDATE_STATUS_REQUEST':
+      return set('update', action.payload.result, state);
+    default:
+      return state;
+  }
+};
+
 
 export default combineReducers({
   dbs,
-  selected
+  selected,
+  update
 });
