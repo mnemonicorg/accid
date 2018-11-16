@@ -1,4 +1,4 @@
-import {set} from 'lodash/fp';
+import {set, includes} from 'lodash/fp';
 
 import {
   combineReducers
@@ -46,8 +46,24 @@ const selected = (state = selectedInitial, action) => {
   }
 };
 
+const updateInitial = {
+  update: false,
+};
+
+const updatingActions = ['UPDATE_STATUS_REQUEST', 'GET_DATABASES_REQUEST', 'SELECT_DATABASE_REQUEST', 'UPDATE_FILTERS'];
+const successActions = ['GET_DATABASES_SUCCESS', 'SELECT_DATABASE_SUCCESS', 'FILL_DATABASE_RESULTS', 'UPDATE_STATUS_SUCCESS'];
+const failureActions = ['GET_DATABASES_FAILURE', 'SELECT_DATABASE_FAILURE', 'FILL_DATABASE_FAILURE', 'UPDATE_STATUS_FAILURE'];
+
+const update = (state = updateInitial, action) => {
+  if (includes(action, updatingActions)) return set('update', action.payload.result, state);
+  if (includes(action, successActions)) return set('update', false, state);
+  if (includes(action, failureActions)) return set('update', false, state);
+  return state;
+};
+
 
 export default combineReducers({
   dbs,
-  selected
+  selected,
+  update
 });

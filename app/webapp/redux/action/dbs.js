@@ -15,6 +15,10 @@ const updateFilters = createAction('UPDATE_FILTERS');
 const fillDbResults = createAction('FILL_DATABASE_RESULTS');
 const fillDbFailure = createAction('FILL_DATABASE_FAILURE');
 
+const updateStatusRequest = createAction('UPDATE_STATUS_REQUEST');
+const updateStatusSuccess = createAction('UPDATE_STATUS_SUCCESS');
+const updateStatusFailure = createAction('UPDATE_STATUS_FAILURE');
+
 export const getDbs = (dispatch) => {
   // console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
   // console.log(dispatch);
@@ -56,7 +60,15 @@ export const listDb = (dbName) =>
       .catch(() => dispatch(selectDbFailure()));
   };
 
+export const updateStatus = () =>
+  (dispatch) => {
+    dispatch(updateStatusRequest());
+    return true
+      .then(() => dispatch(updateStatusSuccess()))
+      .catch(() => dispatch(updateStatusFailure));
+  };
 
 export default {
-  getDbs
+  getDbs,
+  updateStatus
 };
